@@ -9,16 +9,20 @@ SRC_LIBFT = ./libft
 SRC = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ = $(addprefix $(SRC_DIR), $(addsuffix .o, $(FILES)))
 
-all: $(NAME)
-	@echo $(GREEN)compilation success!$(RESET)
+all: libft $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	ar rcs $(NAME) $@
 
-$(NAME): $(OBJ)
-	$(MAKE) -C $(SRC_LIBFT)
-	cp $(SRC_LIBFT)/libft.a $(NAME)
+$(NAME): $(OBJ) libft.a
+	ar rcs $(NAME) $^
+#	 $(MAKE) -C $(SRC_LIBFT)
+#	 cp $(SRC_LIBFT)/libft.a .
+
+libft: 
+	$(MAKE) -C $(SRC_LIBFT) --no-print-directory
+	cp $(SRC_LIBFT)/libft.a .
 
 clean:
 	$(MAKE) clean -C $(SRC_LIBFT)
@@ -26,8 +30,9 @@ clean:
 
 fclean:	clean
 	$(MAKE) fclean -C $(SRC_LIBFT)
-	rm -f $(NAME)
+	$(RM) $(NAME)
+	$(RM) libft.a
 
 re: fclean all
 
-.PHONY:	all clean fclean re bonus rebonus
+.PHONY:	all clean fclean re bonus rebonus libft
