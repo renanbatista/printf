@@ -6,83 +6,92 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/22 20:48:35 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:39:47 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // conversões a lidar cspdiuxX%
-#include "include/printf.h"
+#include "../include/printf.h"
 
-int	print_csp(char caracter, char *str)
+int	print_csp(char **str, char *param)
 {
-	if (caracter == "c")
+	int	number_c;
+
+	number_c = 0;
+	if (**str == 'c')
 	{
-		write(1, str, 1);
-		return 1
+		write(1, param, 1);
+		(*str)++;
+		number_c++;
 	}
-	
-}
-
-int	print_diu(char caracter, char *str)
-{
-}
-
-int	print_x_percent(char caracter, char *str)
-{
-}
-
-int	print_control(char **string, char *param)
-{
-	if (**string == '%')
+	else if (**str == 's')
 	{
-		if (*(*(string)) + 1 == 'c' || *(*(string)) + 1 == 's' || *(*(string))
-			+ 1 == 'p')
-			print_csp((char)*(*(string)) + 1, param);
-		if (*(*(string)) + 1 == 'd' || *(*(string)) + 1 == 'i' || *(*(string))
-			+ 1 == 'u')
-			print_diu((char)*(*(string)) + 1, param);
-		if (*(*(string)) + 1 == 'x' || *(*(string)) + 1 == 'X' || *(*(string))
-			+ 1 == '%')
-			print_x_percent((char)*(*(string)) + 1, param);
-		(*(string)) += 2;
-		return (2);
+		while (*param)
+		{
+			write(1, param, 1);
+			param++;
+			number_c++;
+		}
 	}
 	else
-	{
-		write(1, *string, 1);
-		(*(string))++;
-		return (1);
-	}
+		return (0);
+	return (number_c);
 }
 
-int	ft_printf(const char *string, ...)
+int	print_diu(char **str, int param)
+{
+	return (0);
+}
+
+int	print_x_percent(char **str, char *param)
+{
+	return (0);
+}
+
+int	print_control(char **str, va_list args)
+{
+	int		number_c;
+	char	*test;
+
+	(*str)++;
+	if (**str == 'c' || **str == 's' || **str == 'p' || **str == '%')
+	{
+		if (**str == '%')
+			number_c = print_x_percent(str + 1, va_arg(args, char *));
+		else
+		{
+			test = va_arg(args, char *);
+			number_c = print_csp(str + 1, test);
+		}
+	}
+	else
+		number_c = print_diu(str + 1, va_arg(args, int));
+	return (number_c);
+}
+
+int	ft_printf(const char *str, ...)
 {
 	va_list	args;
-	int		type;
-	char	*param;
 	int		number_printed;
 
 	number_printed = 0;
-	va_start(args, string);
-	while (*string)
+	va_start(args, str);
+	while (*str)
 	{
-		if (*string != '%')
+		if (*str != '%')
 		{
-			write(1, string, 1);
-			string++;	
+			write(1, str, 1);
+			str++;
 		}
-		else 
-		{
-			param = va_arg(args, char *);
-			number_printed += print_control((char **)&string, param);
-			string+=2;
-		}
+		else
+			number_printed += print_control((char **)&str, args);
 	}
-	return (1);
+	va_end(args);
+	return (number_printed);
 }
 
 int	main(void)
 {
-	ft_printf("%d", 20);
+	ft_printf("%c", 'a');
 	return (0);
 }
