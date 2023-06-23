@@ -6,14 +6,14 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/23 16:39:47 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/23 17:02:05 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // conversões a lidar cspdiuxX%
 #include "../include/printf.h"
 
-int	print_csp(char **str, char *param)
+int	print_cs(char **str, va_list args)
 {
 	int	number_c;
 
@@ -43,25 +43,28 @@ int	print_diu(char **str, int param)
 	return (0);
 }
 
-int	print_x_percent(char **str, char *param)
+int	print_x(char **str, char *param)
+{
+	return (0);
+}
+
+int	print_p(char **str, char *param)
 {
 	return (0);
 }
 
 int	print_control(char **str, va_list args)
 {
-	int		number_c;
-	char	*test;
+	int	number_c;
 
 	(*str)++;
 	if (**str == 'c' || **str == 's' || **str == 'p' || **str == '%')
 	{
 		if (**str == '%')
-			number_c = print_x_percent(str + 1, va_arg(args, char *));
+			number_c = print_x(str + 1, va_arg(args, char *));
 		else
 		{
-			test = va_arg(args, char *);
-			number_c = print_csp(str + 1, test);
+			number_c = print_cs(str + 1, args);
 		}
 	}
 	else
