@@ -17,8 +17,6 @@ all: libft $(NAME)
 
 $(NAME): $(OBJ) libft.a
 	ar rcs $(NAME) $^
-#	 $(MAKE) -C $(SRC_LIBFT)
-#	 cp $(SRC_LIBFT)/libft.a .
 
 libft: 
 	$(MAKE) -C $(SRC_LIBFT) --no-print-directory
