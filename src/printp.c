@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf.h                                           :+:      :+:    :+:   */
+/*   printp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 16:01:15 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/23 20:29:40 by r-afonso         ###   ########.fr       */
+/*   Created: 2023/06/23 20:25:29 by r-afonso          #+#    #+#             */
+/*   Updated: 2023/06/23 20:25:47 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINTF_H
-# define PRINTF_H
+#include "../include/printf.h"
 
-# include "libft.h"
-# include <stdarg.h>
-# include <stdio.h>
-# include <unistd.h>
+int	print_p(char **str, va_list args)
+{
+	unsigned long int param;
 
-int	print_p(char **str, va_list args);
-
-#endif
+	param = va_arg(args, unsigned long int);
+	return (0);
+}

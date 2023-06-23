@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/23 17:02:05 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:31:30 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,37 @@
 
 int	print_cs(char **str, va_list args)
 {
-	int	number_c;
+	int		number_c;
+	char	param_c;
+	char	*param_str;
 
-	number_c = 0;
+	number_c = -1;
 	if (**str == 'c')
 	{
-		write(1, param, 1);
+		param_c = va_arg(args, unsigned long int);
+		write(1, &param_c, 1);
 		(*str)++;
-		number_c++;
+		number_c += 2;
 	}
 	else if (**str == 's')
 	{
-		while (*param)
+		param_str = va_arg(args, char *);
+		while (++number_c, *param_str)
 		{
-			write(1, param, 1);
-			param++;
-			number_c++;
+			write(1, param_str, 1);
+			param_str++;
 		}
+		(*str)++;
 	}
-	else
-		return (0);
 	return (number_c);
 }
 
-int	print_diu(char **str, int param)
+int	print_di(char **str, va_list args)
 {
 	return (0);
 }
 
-int	print_x(char **str, char *param)
-{
-	return (0);
-}
-
-int	print_p(char **str, char *param)
+int	print_x(char **str, va_list args)
 {
 	return (0);
 }
@@ -58,17 +55,20 @@ int	print_control(char **str, va_list args)
 	int	number_c;
 
 	(*str)++;
-	if (**str == 'c' || **str == 's' || **str == 'p' || **str == '%')
-	{
-		if (**str == '%')
-			number_c = print_x(str + 1, va_arg(args, char *));
-		else
-		{
-			number_c = print_cs(str + 1, args);
-		}
-	}
+	if (**str == 'c' || **str == 's')
+		number_c = print_cs(str, args);
+	else if (**str == 'x' || **str == 'X')
+		number_c = print_x(str, args);
+	else if (**str == 'p')
+		number_c = print_p(str, args);
+	else if (**str == 'd' || **str == 'i')
+		number_c = print_di(str, args);
 	else
-		number_c = print_diu(str + 1, va_arg(args, int));
+	{
+		if (**str=='%')
+			write(1, "%", 1);
+		number_c = 1;
+	}
 	return (number_c);
 }
 
@@ -95,6 +95,6 @@ int	ft_printf(const char *str, ...)
 
 int	main(void)
 {
-	ft_printf("%c", 'a');
+	ft_printf("%s", "testando uma string");
 	return (0);
 }
