@@ -6,14 +6,14 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/23 20:31:30 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:46:07 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // conversões a lidar cspdiuxX%
 #include "../include/printf.h"
 
-int	print_cs(char **str, va_list args)
+static int	print_cs(char **str, va_list args)
 {
 	int		number_c;
 	char	param_c;
@@ -22,7 +22,7 @@ int	print_cs(char **str, va_list args)
 	number_c = -1;
 	if (**str == 'c')
 	{
-		param_c = va_arg(args, unsigned long int);
+		param_c = va_arg(args, int);
 		write(1, &param_c, 1);
 		(*str)++;
 		number_c += 2;
@@ -40,21 +40,33 @@ int	print_cs(char **str, va_list args)
 	return (number_c);
 }
 
-int	print_di(char **str, va_list args)
+static int	print_di(char **str, va_list args)
+{
+	int	param_c;
+
+	param_c = va_arg(args, long int);
+	ft_putnbr_fd(param_c, 1);
+	return (ft_strlen((char *)param_c));
+}
+
+static int	print_x(char **str, va_list args)
 {
 	return (0);
 }
 
-int	print_x(char **str, va_list args)
+static int	print_p(char **str, va_list args)
 {
 	return (0);
 }
 
-int	print_control(char **str, va_list args)
+
+
+static int	print_control(char **str, va_list args)
 {
 	int	number_c;
 
 	(*str)++;
+	// OK
 	if (**str == 'c' || **str == 's')
 		number_c = print_cs(str, args);
 	else if (**str == 'x' || **str == 'X')
@@ -65,7 +77,7 @@ int	print_control(char **str, va_list args)
 		number_c = print_di(str, args);
 	else
 	{
-		if (**str=='%')
+		if (**str == '%')
 			write(1, "%", 1);
 		number_c = 1;
 	}
@@ -91,10 +103,4 @@ int	ft_printf(const char *str, ...)
 	}
 	va_end(args);
 	return (number_printed);
-}
-
-int	main(void)
-{
-	ft_printf("%s", "testando uma string");
-	return (0);
 }

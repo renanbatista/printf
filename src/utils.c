@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf.h                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 16:01:15 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/23 20:29:40 by r-afonso         ###   ########.fr       */
+/*   Created: 2023/06/28 19:47:31 by r-afonso          #+#    #+#             */
+/*   Updated: 2023/06/28 20:20:48 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINTF_H
-# define PRINTF_H
+#include "ft_printf.h"
 
-# include "libft.h"
-# include <stdarg.h>
-# include <stdio.h>
-# include <unistd.h>
+int	putnbr_updated(int n)
+{
+	long int	n_l;
 
-int	print_p(char **str, va_list args);
-
-#endif
+	
+}
+n_l = n;
+if (n_l < 0)
+{
+	ft_putchar_fd('-', 1);
+	n_l = n_l * -1;
+}
+if (n_l >= 10)
+	ft_putnbr_fd(n_l / 10, 1);
+putnbr_updated((n_l % 10) + '0');

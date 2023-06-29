@@ -1,2 +1,3 @@
-cd src
-cc printf.c ../libft/*.c && ./a.out
+make
+cc main.c libftprintf.a && ./a.out
+make fclean

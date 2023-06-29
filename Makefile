@@ -1,11 +1,12 @@
 NAME=libftprintf.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-FILES = printf
+CFLAGS = 
+FILES = ft_printf utils ft_printf_second
 RM = rm -f
 INC = -I./include
 SRC_DIR = src/
 SRC_LIBFT = ./libft
+SRC_LIBFT_A = $(SRC_LIBFT)/libft.a
 SRC = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ = $(addprefix $(SRC_DIR), $(addsuffix .o, $(FILES)))
 
@@ -13,14 +14,12 @@ all: libft $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-	ar rcs $(NAME) $@
 
-$(NAME): $(OBJ) libft.a
-	ar rcs $(NAME) $^
+$(NAME): $(OBJ) $(SRC_LIBFT_A)
+	ar rcsT $(NAME) $(OBJ) $(SRC_LIBFT_A)
 
 libft: 
 	$(MAKE) -C $(SRC_LIBFT) --no-print-directory
-	cp $(SRC_LIBFT)/libft.a .
 
 clean:
 	$(MAKE) clean -C $(SRC_LIBFT)
