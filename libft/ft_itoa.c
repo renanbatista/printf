@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:35:31 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/15 03:20:05 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:59:48 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*zero_case(char *str, long int n_long, int index)
 	return (str);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long int n)
 {
 	int			digits;
 	char		*str;

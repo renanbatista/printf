@@ -6,24 +6,37 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:47:31 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/28 20:20:48 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:45:47 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf.h"
 
-int	putnbr_updated(int n)
+char	*convert_to_hexa(unsigned long number)
 {
-	long int	n_l;
-
+	int				number_c;
+	unsigned long	remainder;
+	char			hex_number;
+	char			result[20];
 	
+	number_c = 0;
+	while (number != 0)
+	{
+		remainder = number % 16;
+		if (remainder < 10)
+			hex_number = remainder;
+		else
+			hex_number = 'a' + remainder - 10;
+		result[number_c] = remainder;
+		number_c++;
+		number /= 16;
+	}
+	return (result);
 }
-n_l = n;
-if (n_l < 0)
+
+int main()
 {
-	ft_putchar_fd('-', 1);
-	n_l = n_l * -1;
+	// printf("%x", 1234);
+	convert_to_hexa(1234);
+	return (0);
 }
-if (n_l >= 10)
-	ft_putnbr_fd(n_l / 10, 1);
-putnbr_updated((n_l % 10) + '0');
