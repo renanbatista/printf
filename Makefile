@@ -1,6 +1,6 @@
 NAME=libftprintf.a
 CC = cc
-CFLAGS = -Wall, -Wextra and -Werror
+CFLAGS = -Wall -Wextra -Werror
 FILES = ft_printf utils
 RM = rm -f
 INC = -I./include
