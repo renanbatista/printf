@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/30 14:57:05 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/02 21:59:36 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 static int	print_cs(char **str, va_list args)
 {
 	int		number_c;
-	char	param_c;
+	char		param;
 	char	*param_str;
 
 	number_c = -1;
 	if (**str == 'c')
 	{
-		param_c = va_arg(args, int);
-		write(1, &param_c, 1);
+		param = (char)va_arg(args, int);
+		write(1, &param, 1);
 		(*str)++;
 		number_c += 2;
 	}
@@ -44,7 +44,7 @@ static int	print_diu(char **str, long int param_n)
 	char	*param_str;
 	int		number_c;
 
-	number_c = -1;	
+	number_c = -1;
 	param_str = ft_itoa(param_n);
 	while (++number_c, *param_str)
 	{
@@ -57,6 +57,28 @@ static int	print_diu(char **str, long int param_n)
 
 static int	print_xp(char **str, va_list args)
 {
+	void	*param_v;
+	char	param_s[20];
+	int		index;
+
+	index = 0;
+	if (*(*str) == 'p')
+	{
+		param_v = va_arg(args, void *);
+		convert_to_hexa(param_s, (unsigned long)&param_v);
+		write(1, "0x", 2);
+	}
+	else
+		convert_to_hexa(param_s, va_arg(args, unsigned long));
+	while (*param_s)
+	{
+		if (*(*str) == 'x')
+			ft_putchar_fd(ft_tolower((int)*(param_s + index)), 1);
+		if (*(*str) == 'X')
+			ft_putchar_fd(ft_toupper((int)*(param_s + index)), 1);
+		else
+			ft_putchar_fd((int)*(param_s + index), 1);
+	}
 	return (0);
 }
 

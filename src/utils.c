@@ -6,19 +6,18 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:47:31 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/30 18:45:47 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/02 21:32:51 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-char	*convert_to_hexa(unsigned long number)
+void	convert_to_hexa(char *result, unsigned long number)
 {
 	int				number_c;
 	unsigned long	remainder;
 	char			hex_number;
-	char			result[20];
-	
+
 	number_c = 0;
 	while (number != 0)
 	{
@@ -27,16 +26,8 @@ char	*convert_to_hexa(unsigned long number)
 			hex_number = remainder;
 		else
 			hex_number = 'a' + remainder - 10;
-		result[number_c] = remainder;
+		*(result + number_c) = hex_number;
 		number_c++;
 		number /= 16;
 	}
-	return (result);
-}
-
-int main()
-{
-	// printf("%x", 1234);
-	convert_to_hexa(1234);
-	return (0);
 }
