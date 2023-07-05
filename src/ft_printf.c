@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/07/02 21:59:36 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/04 23:23:02 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,91 +15,105 @@
 static int	print_cs(char **str, va_list args)
 {
 	int		number_c;
-	char		param;
+	int		param;
 	char	*param_str;
 
-	number_c = -1;
 	if (**str == 'c')
 	{
-		param = (char)va_arg(args, int);
+		param = va_arg(args, int);
 		write(1, &param, 1);
-		(*str)++;
-		number_c += 2;
+		number_c = 1;
 	}
 	else
 	{
+		number_c = -1;
 		param_str = va_arg(args, char *);
+		if (utils(param_str, 's', 0))
+			return (6);
 		while (++number_c, *param_str)
 		{
 			write(1, param_str, 1);
 			param_str++;
 		}
-		(*str)++;
 	}
 	return (number_c);
 }
 
-static int	print_diu(char **str, long int param_n)
+static int	print_diu(char **str, va_list args)
 {
 	char	*param_str;
 	int		number_c;
+	int		n;
 
 	number_c = -1;
-	param_str = ft_itoa(param_n);
-	while (++number_c, *param_str)
+	if (**str == 'u')
+		param_str = ft_itoa(va_arg(args, unsigned int));
+	else
 	{
-		write(1, param_str, 1);
-		param_str++;
+		n = (int)va_arg(args, int);
+		param_str = ft_itoa(n);
 	}
-	(*str)++;
+	while (++number_c, *(param_str + number_c))
+		write(1, &*(param_str + number_c), 1);
+	free(param_str);
 	return (number_c);
 }
 
-static int	print_xp(char **str, va_list args)
+static int	print_xp(char **str, unsigned long unlo)
 {
-	void	*param_v;
-	char	param_s[20];
-	int		index;
+	unsigned long	number;
+	char			param_s[20];
+	int				index;
+	char			str_res;
 
-	index = 0;
+	index = -1;
 	if (*(*str) == 'p')
-	{
-		param_v = va_arg(args, void *);
-		convert_to_hexa(param_s, (unsigned long)&param_v);
-		write(1, "0x", 2);
-	}
+		number = convert_to_hexa(param_s, unlo);
 	else
-		convert_to_hexa(param_s, va_arg(args, unsigned long));
-	while (*param_s)
+		number = convert_to_hexa(param_s, (unsigned int)unlo);
+	while (index++, number--)
 	{
+		if (index == 0 && *(*str) == 'p')
+			write(1, "0x", 2);
 		if (*(*str) == 'x')
-			ft_putchar_fd(ft_tolower((int)*(param_s + index)), 1);
-		if (*(*str) == 'X')
-			ft_putchar_fd(ft_toupper((int)*(param_s + index)), 1);
+			str_res = ft_tolower(*(param_s + index));
+		else if (*(*str) == 'X')
+			str_res = ft_toupper(*(param_s + index));
 		else
-			ft_putchar_fd((int)*(param_s + index), 1);
+			str_res = *(param_s + index);
+		write(1, &str_res, 1);
 	}
-	return (0);
+	if (*(*str) == 'p')
+		index += 2;
+	return (index);
 }
 
 static int	print_control(char **str, va_list args)
 {
-	int	number_n;
+	int				number_n;
+	unsigned long	ulo;
 
-	(*str)++;
-	// OK
 	if (**str == 'c' || **str == 's')
 		number_n = print_cs(str, args);
 	else if (**str == 'x' || **str == 'X' || **str == 'p')
-		number_n = print_xp(str, args);
+	{
+		ulo = va_arg(args, unsigned long);
+		if (**str == 'p' && ulo == 0)
+		{
+			(*str)++;
+			return (utils("", 'p', 0));
+		}
+		number_n = print_xp(str, ulo);
+	}
 	else if (**str == 'd' || **str == 'i' || **str == 'u')
-		number_n = print_diu(str, va_arg(args, unsigned long));
+		number_n = print_diu(str, args);
 	else
 	{
 		if (**str == '%')
 			write(1, "%", 1);
 		number_n = 1;
 	}
+	(*str)++;
 	return (number_n);
 }
 
@@ -112,13 +126,21 @@ int	ft_printf(const char *str, ...)
 	va_start(args, str);
 	while (*str)
 	{
-		if (*str != '%')
+		if (*str != '%' && ++number_printed)
 		{
 			write(1, str, 1);
 			str++;
 		}
 		else
-			number_printed += print_control((char **)&str, args);
+		{
+			if (*str == ' ')
+				str++;
+			else
+			{
+				str++;
+				number_printed += print_control((char **)&str, args);
+			}
+		}
 	}
 	va_end(args);
 	return (number_printed);

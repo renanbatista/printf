@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:04:41 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/30 15:00:11 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:47:45 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 typedef struct s_list
 {
-	void			*content;
+	void				*content;
 	struct s_list		*next;
 }					t_list;
 

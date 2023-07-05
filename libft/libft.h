@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:04:41 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/06/30 15:00:31 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/04 23:23:57 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 typedef struct s_list
 {
 	void			*content;
-	struct s_list		*next;
+	struct s_list	*next;
 }					t_list;
 
 int					ft_isalpha(int c);
