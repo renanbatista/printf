@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/07/05 18:51:27 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/06 00:14:52 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ int	ft_printf(const char *str, ...)
 
 	number_printed = 0;
 	va_start(args, str);
+	if (!str)
+		return (-1);
 	while (*str)
 	{
 		if (*str != '%' && ++number_printed && str++)

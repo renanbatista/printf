@@ -6,7 +6,7 @@
 /*   By: r-afonso < r-afonso@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 00:45:08 by r-afonso          #+#    #+#             */
-/*   Updated: 2023/07/04 23:23:02 by r-afonso         ###   ########.fr       */
+/*   Updated: 2023/07/06 00:31:27 by r-afonso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	print_cs(char **str, va_list args)
 	return (number_c);
 }
 
-static int	print_diu(char **str, va_list args)
+static int	print_diu(char **str, va_list args, char space)
 {
 	char	*param_str;
 	int		number_c;
@@ -52,10 +52,14 @@ static int	print_diu(char **str, va_list args)
 	{
 		n = (int)va_arg(args, int);
 		param_str = ft_itoa(n);
+		if (n >= 0 && space == 's')
+			write(1, " ", 1);
 	}
 	while (++number_c, *(param_str + number_c))
 		write(1, &*(param_str + number_c), 1);
 	free(param_str);
+	if (**str != 'u' && n >= 0 && space == 's')
+		number_c++;
 	return (number_c);
 }
 
@@ -88,7 +92,7 @@ static int	print_xp(char **str, unsigned long unlo)
 	return (index);
 }
 
-static int	print_control(char **str, va_list args)
+static int	print_control(char **str, va_list args, char space)
 {
 	int				number_n;
 	unsigned long	ulo;
@@ -106,7 +110,7 @@ static int	print_control(char **str, va_list args)
 		number_n = print_xp(str, ulo);
 	}
 	else if (**str == 'd' || **str == 'i' || **str == 'u')
-		number_n = print_diu(str, args);
+		number_n = print_diu(str, args, space);
 	else
 	{
 		if (**str == '%')
@@ -124,22 +128,22 @@ int	ft_printf(const char *str, ...)
 
 	number_printed = 0;
 	va_start(args, str);
+	if (!str)
+		return (-1);
 	while (*str)
 	{
-		if (*str != '%' && ++number_printed)
-		{
-			write(1, str, 1);
-			str++;
-		}
+		if (*str != '%' && ++number_printed && str++)
+			write(1, (str - 1), 1);
 		else
 		{
-			if (*str == ' ')
-				str++;
-			else
+			if (++str && *str == ' ')
 			{
-				str++;
-				number_printed += print_control((char **)&str, args);
+				while (*str && *str == ' ')
+					str++;
+				number_printed += print_control((char **)&str, args, 's');
 			}
+			else
+				number_printed += print_control((char **)&str, args, 'n');
 		}
 	}
 	va_end(args);

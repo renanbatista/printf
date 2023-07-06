@@ -19,8 +19,8 @@ all: libft $(NAME)
 $(NAME): $(OBJ) $(SRC_LIBFT_A)
 	ar rcsT $(NAME) $(OBJ) $(SRC_LIBFT_A)
 
-#bonus:	libft $(BONUS_OBJS) $(SRC_LIBFT_A)
-#	@$(MAKE) --no-print-directory OBJ="$(BONUS_OBJS)"
+bonus:	libft $(BONUS_OBJS) $(SRC_LIBFT_A)
+	@$(MAKE) --no-print-directory OBJ="$(BONUS_OBJS)"
 
 libft: 
 	@$(MAKE) -C $(SRC_LIBFT) --no-print-directory
